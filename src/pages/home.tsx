@@ -56,12 +56,22 @@ export function Home() {
               icon={<Percent size={20} />}
               colorClasses="bg-pink-500"
             />
-            <div>
-              <div>
-                <input type="text" value={novoItem} onChange={(e) => setNovoItem(e.target.value)} placeholder="Digite a Tarefa"/>
-                <Button onClick={adicionaItem} className="bg-chart-2 m-5"> Adicionar Tarefa </Button>
+            <div className="w-full">
+              <div className="flex items-center gap-4 w-full">
+                <input
+                  type="text"
+                  value={novoItem}
+                  onChange={(e) => setNovoItem(e.target.value)}
+                  placeholder="Digite a Tarefa"
+                  className="bg-background/20 flex-1 px-3 py-2 rounded text-white"/>
+
+                <Button
+                  onClick={adicionaItem}
+                  className="bg-chart-2 m-5 px-7 py-5">
+                  Adicionar Tarefa
+                </Button>
               </div>
-              <div className="flex-1">
+              <div className="w-full">
                 <Table dados={lista}/>
               </div>
             </div>

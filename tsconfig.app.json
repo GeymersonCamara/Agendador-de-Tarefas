@@ -8,7 +8,6 @@
     "skipLibCheck": true,
 
     /* 👇 ADICIONE ISSO */
-    "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     },
