@@ -15,3 +15,12 @@ export interface TabelaProps {
   tasks: string
   Suppliers: SupplierData[]
 }
+
+export interface Item {
+  id: number;
+  nome: string;
+}
+
+export type Props = {
+  dados: Item[]
+}

@@ -7,14 +7,25 @@ import { Sidebar } from "../components/menu-lateral";
 import { Card } from "../components/card";
 import { Table } from "../components/tabela";
 import { Header } from "../components/header";
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import type { Item } from "@/domain/type";
 
 export function Home() {
-  const [adicionar, setAdicionar] = useState<string[]>([])
 
-  function adicionarTarefa(novaTarefa: string) {
-    setAdicionar(prev => [...prev, novaTarefa])
+  const [lista, setLista] = useState<Item[]>([])
+  const [novoItem, setNovoItem] =useState<string>('')
+
+  function adicionaItem() {
+    if(novoItem.trim() === '') return
+
+    const novoObjetoItem: Item = {
+      id: Date.now(),
+      nome: novoItem
+    }
+
+    setLista(prev => [...prev, novoObjetoItem])
+    setNovoItem('')
   }
 
   return (
@@ -47,11 +58,11 @@ export function Home() {
           />
           <div>
             <div>
-              <Button
-                onClick={() => adicionarTarefa("Nova Tarefa")}> Adicionar Tarefa</Button>
+              <input type="text" value={novoItem} onChange={(e) => setNovoItem(e.target.value)} placeholder="Digite a Tarefa"/>
+              <Button onClick={adicionaItem} className="bg-chart-2 m-5"> Adicionar Tarefa </Button>
             </div>
             <div className="flex-1">
-              <Table tasks={adicionar}/>
+              <Table dados={lista}/>
             </div>
           </div>
         </div>
