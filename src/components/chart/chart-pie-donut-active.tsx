@@ -41,11 +41,11 @@ const chartConfig = {
   },
   edge: {
     label: "Edge",
-    color: "var(--chart-4)",
+    color: "var(--chart-10)",
   },
   other: {
     label: "Other",
-    color: "var(--chart-5)",
+    color: "var(--chart-2)",
   },
 } satisfies ChartConfig
 

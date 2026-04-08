@@ -1,5 +1,4 @@
-import { ChartPieDonut } from "./chart/chart-pie-donut-active";
-
+import { ChartAreaDefault } from "./chart/chart-area-default";
 
 export function Card({
   title,
@@ -26,7 +25,7 @@ export function Card({
         <div className="text-white/70">{icon}</div>
       </div>
       <div className="text-3xl font-bold text-white mb-1">
-        <ChartPieDonut/>
+        <ChartAreaDefault/>
         {value}
         </div>
       <div className="text-xs text-white/70">

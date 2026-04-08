@@ -29,44 +29,44 @@ export function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0A1B3C] flex text-white font-sans">
-      <Sidebar />
-      <div className="flex-1 flex flex-col px-20 pt-6 pb-10 gap-6">
-        <Header />
+      <div className="min-h-screen bg-[#0A1B3C] flex text-white font-sans">
+        <Sidebar />
+        <div className="flex-1 flex flex-col px-20 pt-6 pb-10 gap-6">
+          <Header />
 
-        <div className="flex gap-6">
-          <Card
-            title="Fluxo Diario"
-            value="R$9.681.527"
-            subtitle={"Melhor mês: novembro\nR$1.189.150"}
-            icon={<BarChart2 size={20} />}
-            colorClasses="bg-blue-600"
-          />
-          <Card
-            title="Fluxo Mensal"
-            value="R$2.061.909"
-            subtitle={"Melhor mês: novembro\nR$255.943"}
-            icon={<Clock size={20} />}
-            colorClasses="bg-green-500"
-          />
-          <Card
-            title="Media Geral"
-            value="21%"
-            subtitle={"Melhor mês: janeiro\n22%"}
-            icon={<Percent size={20} />}
-            colorClasses="bg-pink-500"
-          />
-          <div>
+          <div className="flex gap-6">
+            <Card
+              title="Fluxo Diario"
+              value="R$9.681.527"
+              subtitle={"Melhor mês: novembro\nR$1.189.150"}
+              icon={<BarChart2 size={20} />}
+              colorClasses="bg-blue-600"
+            />
+            <Card
+              title="Fluxo Mensal"
+              value="R$2.061.909"
+              subtitle={"Melhor mês: novembro\nR$255.943"}
+              icon={<Clock size={20} />}
+              colorClasses="bg-green-500"
+            />
+            <Card
+              title="Media Geral"
+              value="21%"
+              subtitle={"Melhor mês: janeiro\n22%"}
+              icon={<Percent size={20} />}
+              colorClasses="bg-pink-500"
+            />
             <div>
-              <input type="text" value={novoItem} onChange={(e) => setNovoItem(e.target.value)} placeholder="Digite a Tarefa"/>
-              <Button onClick={adicionaItem} className="bg-chart-2 m-5"> Adicionar Tarefa </Button>
-            </div>
-            <div className="flex-1">
-              <Table dados={lista}/>
+              <div>
+                <input type="text" value={novoItem} onChange={(e) => setNovoItem(e.target.value)} placeholder="Digite a Tarefa"/>
+                <Button onClick={adicionaItem} className="bg-chart-2 m-5"> Adicionar Tarefa </Button>
+              </div>
+              <div className="flex-1">
+                <Table dados={lista}/>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
   );
 }
