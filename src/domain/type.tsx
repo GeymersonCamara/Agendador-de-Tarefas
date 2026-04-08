@@ -10,3 +10,8 @@ export interface ChannelRevenue {
   value: number;
   max: number;
 }
+
+export interface TabelaProps {
+  tasks: string
+  Suppliers: SupplierData[]
+}

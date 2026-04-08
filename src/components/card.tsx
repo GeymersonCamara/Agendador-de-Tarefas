@@ -1,3 +1,6 @@
+import { ChartPieDonut } from "./chart/chart-pie-donut-active";
+
+
 export function Card({
   title,
   subtitle,
@@ -22,7 +25,10 @@ export function Card({
         <div className="text-sm text-white/80">{title}</div>
         <div className="text-white/70">{icon}</div>
       </div>
-      <div className="text-3xl font-bold text-white mb-1">{value}</div>
+      <div className="text-3xl font-bold text-white mb-1">
+        <ChartPieDonut/>
+        {value}
+        </div>
       <div className="text-xs text-white/70">
         {subtitle.split("\n").map((line, i) => (
           <p key={i}>{line}</p>
