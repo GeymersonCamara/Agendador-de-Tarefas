@@ -8,7 +8,7 @@ import { Card } from "../components/card";
 import { Table } from "../components/tabela";
 import { Header } from "../components/header";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { Item } from "@/domain/type";
 
 export function Home() {
@@ -21,12 +21,25 @@ export function Home() {
 
     const novoObjetoItem: Item = {
       id: Date.now(),
-      nome: novoItem
+      nome: novoItem,
+      concluido: false
     }
 
     setLista(prev => [...prev, novoObjetoItem])
     setNovoItem('')
   }
+
+  function removerTarefa(id: number) {
+    setLista(lista.filter(lista => lista.id !== id))
+  }
+
+  function concluirTarefa(id: number) {
+    setLista(lista => lista.map(item => item.id === id ? {...item, concluido: !item.concluido } : item))
+  }
+
+  useEffect(() => {
+    console.log("Mudou a lista: ", lista[0])
+  }, [lista])
 
   return (
       <div className="min-h-screen bg-[#0A1B3C] flex text-white font-sans">
@@ -72,7 +85,10 @@ export function Home() {
                 </Button>
               </div>
               <div className="w-full">
-                <Table dados={lista}/>
+                <Table
+                  dados={lista}
+                  onRemove={removerTarefa}
+                  onCheck={concluirTarefa}/>
               </div>
             </div>
           </div>

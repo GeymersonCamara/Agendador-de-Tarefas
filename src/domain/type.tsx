@@ -17,10 +17,13 @@ export interface TabelaProps {
 }
 
 export interface Item {
-  id: number;
-  nome: string;
+  id: number
+  nome: string
+  concluido: boolean
 }
 
 export type Props = {
   dados: Item[]
+  onRemove: (id:number) => void
+  onCheck: (id:number) => void
 }
