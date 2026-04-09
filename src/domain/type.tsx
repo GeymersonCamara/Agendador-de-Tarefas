@@ -12,8 +12,8 @@ export interface ChannelRevenue {
 }
 
 export interface TabelaProps {
-  tasks: string
-  Suppliers: SupplierData[]
+  tasks: Item[];
+  suppliers: SupplierData[];
 }
 
 export type Item = {
@@ -21,12 +21,17 @@ export type Item = {
   nome: string;
   concluido: boolean;
   criadoEm: string;
-  concluidoEm?: string;
+  concluidoEm?: string | null;
 };
 
-export type Props = {
-  dados: Item[]
-  onRemove: (id:number) => void
-  onCheck: (id:number) => void
-  completed: number
-}
+export type TableProps = {
+  dados: Item[];
+  onRemove: (id: number) => void;
+  onCheck: (id: number) => void;
+  completed: number;
+};
+
+export type ChartData = {
+  label: string;
+  total: number;
+};

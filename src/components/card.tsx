@@ -1,3 +1,4 @@
+import type { ChartData } from "@/domain/type";
 import { ChartAreaDefault } from "./chart/chart-area-default";
 
 export function Card({
@@ -13,7 +14,7 @@ export function Card({
   value: number;
   icon: React.ReactNode;
   colorClasses: string;
-  chartData: { date?: string; month?: string; total: number }[];
+  chartData?: ChartData[];
 }) {
   return (
     <div
@@ -24,7 +25,7 @@ export function Card({
         <div className="text-primary/70">{icon}</div>
       </div>
       <div className="text-3xl font-bold text-primary mb-1">
-        <ChartAreaDefault data={chartData} />
+        <ChartAreaDefault data={chartData ?? []} />
         {value}
         </div>
       <div className="text-xs text-primary/70">

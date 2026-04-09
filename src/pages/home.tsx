@@ -143,7 +143,7 @@ export function Home() {
       });
 
       return Object.entries(mapa).map(([date, total]) => ({
-        date,
+        label: date,
         total,
       }));
     }, [lista]);
@@ -161,7 +161,7 @@ export function Home() {
       });
 
       return Object.entries(mapa).map(([mes, valor]) => ({
-        month: mes,
+        label: mes,
         total: valor,
       }));
     }, [lista]);

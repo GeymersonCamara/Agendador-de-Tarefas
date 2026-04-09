@@ -12,11 +12,12 @@ import {
   ChartTooltipContent,
   type ChartConfig,
 } from "@/components/ui/chart"
+import type { ChartData } from "@/domain/type"
 
 export const description = "A simple area chart"
 
 type Props = {
-  data: { date: string; total: number }[];
+  data: ChartData[];
 };
 
 const chartConfig = {
