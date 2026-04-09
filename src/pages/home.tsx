@@ -71,9 +71,47 @@ export function Home() {
     return lista.filter(lista => lista.concluido).length
   }, [lista])
 
-  const media = useMemo(() => {
-    return lista.length === 0 ? 0 : contarTarefasConcluidas / lista.length;
-  }, [lista, contarTarefasConcluidas]);
+  const mediaDiaria = useMemo(() => {
+    const hoje = new Date().toISOString().split("T")[0];
+
+    const tarefasCriadasHoje = lista.filter(item =>
+      item.criadoEm.startsWith(hoje)
+    );
+
+    const tarefasConcluidasHoje = lista.filter(item =>
+      item.concluidoEm?.startsWith(hoje)
+    );
+
+    if (tarefasCriadasHoje.length === 0) return 0;
+
+    return tarefasConcluidasHoje.length / tarefasCriadasHoje.length;
+  }, [lista]);
+
+  const mediaMensal = useMemo(() => {
+    const mesAtual = new Date().getMonth();
+    const anoAtual = new Date().getFullYear();
+
+    const tarefasCriadasMes = lista.filter(item => {
+      const data = new Date(item.criadoEm);
+      return (
+        data.getMonth() === mesAtual &&
+        data.getFullYear() === anoAtual
+      );
+    });
+
+    const tarefasConcluidasMes = lista.filter(item => {
+      if (!item.concluidoEm) return false;
+      const data = new Date(item.concluidoEm);
+      return (
+        data.getMonth() === mesAtual &&
+        data.getFullYear() === anoAtual
+      );
+    });
+
+    if (tarefasCriadasMes.length === 0) return 0;
+
+    return tarefasConcluidasMes.length / tarefasCriadasMes.length;
+  }, [lista]);
 
   useEffect(() => {
     localStorage.setItem("tarefas", JSON.stringify(lista));
@@ -110,21 +148,21 @@ export function Home() {
             <Card
               title="Fluxo Mensal"
               value={tarefasMes.length}
-              subtitle={`Melhor mês: novembro\n${contarTarefasConcluidas}`}
+              subtitle={`Melhor mês: novembro\n${tarefasMes.length}`}
               icon={<BarChart2 size={20} />}
               colorClasses="bg-chart-4"
             />
             <Card
               title="Média Diaria"
-              value={contarTarefasConcluidas}
-              subtitle={"Melhor mês: novembro\nR$1.189.150"}
+              value={Number(mediaDiaria.toFixed(2))}
+              subtitle={`${mediaDiaria.toFixed(2)}%`}
               icon={<BarChart2 size={20} />}
               colorClasses="bg-chart-4"
             />
             <Card
               title="Média Mensal"
-              value={Number(media.toFixed(2))}
-              subtitle={`${media.toFixed(2)}%`}
+              value={Number(mediaMensal.toFixed(2))}
+              subtitle={`${mediaMensal.toFixed(2)}%`}
               icon={<Percent size={20} />}
               colorClasses="bg-chart-4"
             />
