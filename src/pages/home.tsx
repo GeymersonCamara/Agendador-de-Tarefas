@@ -7,7 +7,7 @@ import { Card } from "../components/card";
 import { Table } from "../components/tabela";
 import { Header } from "../components/header";
 import { Button } from "@/components/ui/button";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import type { Item } from "@/domain/type";
 
 export function Home() {
@@ -18,8 +18,12 @@ export function Home() {
   function adicionaItem() {
     if(novoItem.trim() === '') return
 
+    const novoId = lista.length > 0
+      ? Math.max(...lista.map(item => item.id)) + 1
+      : 1
+
     const novoObjetoItem: Item = {
-      id: Date.now(),
+      id: novoId,
       nome: novoItem,
       concluido: false
     }
@@ -40,62 +44,75 @@ export function Home() {
     return lista.filter(lista => lista.concluido).length
   }, [lista])
 
-  useEffect(() => {
-    console.log("Mudou a lista: ", lista[0])
-  }, [lista])
+  const media = useMemo(() => {
+    return lista.length === 0 ? 0 : contarTarefasConcluidas / lista.length;
+  }, [lista, contarTarefasConcluidas]);
 
   return (
-      <div className="min-h-screen bg-[#0A1B3C] flex text-white font-sans">
+      <div className="min-h-screen bg-primary flex text-white font-sans">
         <Sidebar />
         <div className="flex-1 flex flex-col px-20 pt-6 pb-10 gap-6">
           <Header />
-
-          <div className="flex gap-6">
+        <div className="flex gap-6 w-full">
+          <div className="flex gap-6 w-full grid grid-cols-2 gap-4 items-start">
             <Card
               title="Fluxo Diario"
               value={contarTarefasConcluidas}
               subtitle={"Melhor mês: novembro\nR$1.189.150"}
               icon={<BarChart2 size={20} />}
-              colorClasses="bg-blue-600"
+              colorClasses="bg-chart-4"
+            />
+            <Card
+              title="Média Diaria"
+              value={contarTarefasConcluidas}
+              subtitle={"Melhor mês: novembro\nR$1.189.150"}
+              icon={<BarChart2 size={20} />}
+              colorClasses="bg-chart-4"
             />
             <Card
               title="Fluxo Mensal"
               value={contarTarefasConcluidas}
               subtitle={`Melhor mês: novembro\n${contarTarefasConcluidas}`}
               icon={<BarChart2 size={20} />}
-              colorClasses="bg-green-500"
+              colorClasses="bg-chart-4"
             />
             <Card
-              title="Media Geral"
-              value={contarTarefasConcluidas}
-              subtitle={"Melhor mês: janeiro\n22%"}
+              title="Média Mensal"
+              value={Number(media.toFixed(2))}
+              subtitle={`${media.toFixed(2)}%`}
               icon={<Percent size={20} />}
-              colorClasses="bg-pink-500"
+              colorClasses="bg-chart-4"
             />
-            <div className="w-full">
-              <div className="flex items-center gap-4 w-full">
-                <input
-                  type="text"
-                  value={novoItem}
-                  onChange={(e) => setNovoItem(e.target.value)}
-                  placeholder="Digite a Tarefa"
-                  className="bg-background/20 flex-1 px-3 py-2 rounded text-white"/>
-
-                <Button
-                  onClick={adicionaItem}
-                  className="bg-chart-2 m-5 px-7 py-5">
-                  Adicionar Tarefa
-                </Button>
-              </div>
-              <div className="w-full">
-                <Table
-                  dados={lista}
-                  onRemove={removerTarefa}
-                  onCheck={concluirTarefa}
-                  completed={contarTarefasConcluidas}/>
-              </div>
-            </div>
           </div>
+
+          <div className="flex flex-col gap-4 w-2/3">
+            
+            <div className="flex items-center gap-4 w-full">
+              <input
+                type="text"
+                value={novoItem}
+                onChange={(e) => setNovoItem(e.target.value)}
+                placeholder="Digite a Tarefa"
+                className="bg-background/20 flex-1 px-3 py-2 rounded text-white"
+              />
+
+              <Button
+                onClick={adicionaItem}
+                className="bg-chart-2 px-7 py-5"
+              >
+                Adicionar Tarefa
+              </Button>
+            </div>
+
+            <Table
+              dados={lista}
+              onRemove={removerTarefa}
+              onCheck={concluirTarefa}
+              completed={contarTarefasConcluidas}
+            />
+          </div>
+
+        </div>
         </div>
       </div>
   );
