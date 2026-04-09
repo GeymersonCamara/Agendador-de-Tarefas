@@ -5,8 +5,6 @@ import { Area, AreaChart, CartesianGrid, XAxis } from "recharts"
 import {
   Card,
   CardContent,
-  CardHeader,
-  CardTitle,
 } from "@/components/ui/card"
 import {
   ChartContainer,
@@ -17,14 +15,9 @@ import {
 
 export const description = "A simple area chart"
 
-const chartData = [
-  { month: "January", desktop: 186 },
-  { month: "February", desktop: 305 },
-  { month: "March", desktop: 237 },
-  { month: "April", desktop: 73 },
-  { month: "May", desktop: 209 },
-  { month: "June", desktop: 214 },
-]
+type Props = {
+  data: { date: string; total: number }[];
+};
 
 const chartConfig = {
   desktop: {
@@ -33,17 +26,14 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-export function ChartAreaDefault() {
+export function ChartAreaDefault({ data }: Props) {
   return (
     <Card className="bg-white">
-      <CardHeader>
-        <CardTitle>Area Chart</CardTitle>
-      </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
           <AreaChart
             accessibilityLayer
-            data={chartData}
+            data={data}
             margin={{
               left: 12,
               right: 12,
@@ -51,7 +41,7 @@ export function ChartAreaDefault() {
           >
             <CartesianGrid vertical={false} />
             <XAxis
-              dataKey="month"
+              dataKey="date"
               tickLine={false}
               axisLine={false}
               tickMargin={8}
@@ -62,7 +52,7 @@ export function ChartAreaDefault() {
               content={<ChartTooltipContent indicator="line" />}
             />
             <Area
-              dataKey="desktop"
+              dataKey="total"
               type="natural"
               fill="var(--color-desktop)"
               fillOpacity={0.4}

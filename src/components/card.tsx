@@ -6,12 +6,14 @@ export function Card({
   value,
   icon,
   colorClasses,
+  chartData
 }: {
   title: string;
   subtitle: string;
   value: number;
   icon: React.ReactNode;
   colorClasses: string;
+  chartData: { date?: string; month?: string; total: number }[];
 }) {
   return (
     <div
@@ -22,7 +24,7 @@ export function Card({
         <div className="text-primary/70">{icon}</div>
       </div>
       <div className="text-3xl font-bold text-primary mb-1">
-        <ChartAreaDefault />
+        <ChartAreaDefault data={chartData} />
         {value}
         </div>
       <div className="text-xs text-primary/70">

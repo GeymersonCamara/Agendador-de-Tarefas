@@ -118,18 +118,53 @@ export function Home() {
   }, [lista]);
 
   const tarefasHoje = useMemo(() => {
-    return lista.filter(item =>
-      item.concluidoEm?.startsWith(hoje)
-    );
-  }, [lista, hoje]);
+      return lista.filter(item =>
+        item.concluidoEm?.startsWith(hoje)
+      );
+    }, [lista, hoje]);
 
-  const tarefasMes = useMemo(() => {
-    return lista.filter(item => {
-      if (!item.concluidoEm) return false;
-      const data = new Date(item.concluidoEm);
-      return data.getMonth() === mesAtual;
-    });
-  }, [lista, mesAtual]);
+    const tarefasMes = useMemo(() => {
+      return lista.filter(item => {
+        if (!item.concluidoEm) return false;
+        const data = new Date(item.concluidoEm);
+        return data.getMonth() === mesAtual;
+      });
+    }, [lista, mesAtual]);
+
+    const dadosGraficoDiario = useMemo(() => {
+      const mapa: Record<string, number> = {};
+
+      lista.forEach(item => {
+        if (!item.concluidoEm) return;
+
+        const dia = item.concluidoEm.split("T")[0];
+
+        mapa[dia] = (mapa[dia] || 0) + 1;
+      });
+
+      return Object.entries(mapa).map(([date, total]) => ({
+        date,
+        total,
+      }));
+    }, [lista]);
+
+    const dadosGraficoMensal = useMemo(() => {
+      const mapa: Record<string, number> = {};
+
+      lista.forEach(item => {
+        if (!item.concluidoEm) return;
+
+        const data = new Date(item.concluidoEm);
+        const mes = `${data.getFullYear()}-${data.getMonth() + 1}`;
+
+        mapa[mes] = (mapa[mes] || 0) + 1;
+      });
+
+      return Object.entries(mapa).map(([mes, valor]) => ({
+        month: mes,
+        total: valor,
+      }));
+    }, [lista]);
 
   return (
       <div className="min-h-screen bg-primary flex text-white font-sans">
@@ -144,6 +179,7 @@ export function Home() {
               subtitle={"Melhor mês: novembro\nR$1.189.150"}
               icon={<BarChart2 size={20} />}
               colorClasses="bg-chart-4"
+              chartData={dadosGraficoDiario}
             />
             <Card
               title="Fluxo Mensal"
@@ -151,12 +187,13 @@ export function Home() {
               subtitle={`Melhor mês: novembro\n${tarefasMes.length}`}
               icon={<BarChart2 size={20} />}
               colorClasses="bg-chart-4"
+              chartData={dadosGraficoMensal}
             />
             <Card
               title="Média Diaria"
               value={Number(mediaDiaria.toFixed(2))}
               subtitle={`${mediaDiaria.toFixed(2)}%`}
-              icon={<BarChart2 size={20} />}
+              icon={<Percent size={20} />}
               colorClasses="bg-chart-4"
             />
             <Card
