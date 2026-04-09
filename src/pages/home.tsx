@@ -1,6 +1,5 @@
 import {
   BarChart2,
-  Clock,
   Percent,
 } from "lucide-react";
 import { Sidebar } from "../components/menu-lateral";
@@ -63,7 +62,7 @@ export function Home() {
               title="Fluxo Mensal"
               value={contarTarefasConcluidas}
               subtitle={`Melhor mês: novembro\n${contarTarefasConcluidas}`}
-              icon={<Clock size={20} />}
+              icon={<BarChart2 size={20} />}
               colorClasses="bg-green-500"
             />
             <Card
