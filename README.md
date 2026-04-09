@@ -1,46 +1,40 @@
-# 🧩 Todo App Inteligente
+# 🧩 Agendador de Tarefas Inteligente
 
-Aplicação web desenvolvida com React para gerenciamento de tarefas (To-Do List), com foco em praticar conceitos fundamentais como gerenciamento de estado e efeitos colaterais utilizando `useState` e `useEffect`.
+Aplicação web desenvolvida com React e TypeScript para gerenciamento avançado de tarefas, com cálculo de métricas diárias e mensais e visualização em gráficos interativos.
 
 ---
 
 ## 🚀 Funcionalidades
 
-* ✅ Adicionar novas tarefas
-* 📋 Listar tarefas em tempo real
-* ✔️ Marcar tarefas como concluídas
-* ❌ Remover tarefas
-* 💾 Persistência de dados com `localStorage`
-* 🔄 Carregamento automático das tarefas ao iniciar a aplicação
+- ✅ Adicionar, concluir e remover tarefas com timestamps automáticos
+- 💾 Persistência dos dados localmente usando `localStorage`
+- 📊 Cálculo e exibição de métricas: fluxo diário, fluxo mensal, média diária e média mensal
+- 📈 Gráficos visuais para análise dos dados por dia e por mês
+- 🎨 Interface responsiva e componentes reutilizáveis (cards, tabelas, sidebar, etc)
 
 ---
 
 ## 🛠️ Tecnologias utilizadas
 
-* React
-* JavaScript (ES6+)
-* HTML5
-* CSS3
+- React (Functional Components + Hooks)
+- TypeScript
+- Recharts (biblioteca de gráficos)
+- Tailwind CSS (estilização)
+- LocalStorage para persistência local
+- Lucide React (ícones)
 
 ---
 
 ## 🧠 Conceitos aplicados
 
-* Gerenciamento de estado com `useState`
-* Efeitos colaterais com `useEffect`
-* Componentização
-* Manipulação de arrays e objetos
-* Persistência de dados no navegador
-
----
-
-## 📦 Estrutura do projeto
-
-src/
-├── App.jsx
-├── components/
-│    ├── TaskList.jsx
-│    └── TaskItem.jsx
+- Gerenciamento de estado com `useState`
+- Efeitos colaterais e sincronização com `useEffect`
+- Memoização com `useMemo` para otimização de cálculos
+- Componentização avançada para reutilização e organização
+- Tipagem rigorosa com TypeScript
+- Manipulação e formatação de datas em JavaScript
+- Persistência local e recuperação automática de dados
+- Visualização de dados com gráficos interativos
 
 ---
 
@@ -48,39 +42,15 @@ src/
 
 1. Clone o repositório:
 
-```
-git clone https://github.com/seu-usuario/seu-repo.git
-```
+```bash
+git clone https://github.com/seu-usuario/agendador-tarefas.git
+cd agendador-tarefas
 
-2. Acesse a pasta:
-
-```
-cd seu-repo
-```
-
-3. Instale as dependências:
-
-```
 npm install
-```
+# ou
+yarn install
 
-4. Execute o projeto:
-
-```
 npm run dev
+# ou
+yarn dev
 ```
-
----
-
-## 📌 Melhorias futuras
-
-* 🔍 Filtro de tarefas (todas, concluídas, pendentes)
-* 📊 Contador de tarefas
-* 🌙 Tema dark/light
-* ☁️ Integração com API para salvar dados na nuvem
-
----
-
-## 📄 Licença
-
-Este projeto é apenas para fins de estudo e prática.
