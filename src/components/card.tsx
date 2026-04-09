@@ -9,7 +9,7 @@ export function Card({
 }: {
   title: string;
   subtitle: string;
-  value: string;
+  value: number;
   icon: React.ReactNode;
   colorClasses: string;
 }) {
@@ -25,7 +25,7 @@ export function Card({
         <div className="text-white/70">{icon}</div>
       </div>
       <div className="text-3xl font-bold text-white mb-1">
-        <ChartAreaDefault/>
+        <ChartAreaDefault />
         {value}
         </div>
       <div className="text-xs text-white/70">

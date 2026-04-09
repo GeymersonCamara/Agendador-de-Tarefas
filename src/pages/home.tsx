@@ -8,7 +8,7 @@ import { Card } from "../components/card";
 import { Table } from "../components/tabela";
 import { Header } from "../components/header";
 import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { Item } from "@/domain/type";
 
 export function Home() {
@@ -37,6 +37,10 @@ export function Home() {
     setLista(lista => lista.map(item => item.id === id ? {...item, concluido: !item.concluido } : item))
   }
 
+  const contarTarefasConcluidas = useMemo(() => {
+    return lista.filter(lista => lista.concluido).length
+  }, [lista])
+
   useEffect(() => {
     console.log("Mudou a lista: ", lista[0])
   }, [lista])
@@ -50,21 +54,21 @@ export function Home() {
           <div className="flex gap-6">
             <Card
               title="Fluxo Diario"
-              value="R$9.681.527"
+              value={contarTarefasConcluidas}
               subtitle={"Melhor mês: novembro\nR$1.189.150"}
               icon={<BarChart2 size={20} />}
               colorClasses="bg-blue-600"
             />
             <Card
               title="Fluxo Mensal"
-              value="R$2.061.909"
-              subtitle={"Melhor mês: novembro\nR$255.943"}
+              value={contarTarefasConcluidas}
+              subtitle={`Melhor mês: novembro\n${contarTarefasConcluidas}`}
               icon={<Clock size={20} />}
               colorClasses="bg-green-500"
             />
             <Card
               title="Media Geral"
-              value="21%"
+              value={contarTarefasConcluidas}
               subtitle={"Melhor mês: janeiro\n22%"}
               icon={<Percent size={20} />}
               colorClasses="bg-pink-500"
@@ -88,7 +92,8 @@ export function Home() {
                 <Table
                   dados={lista}
                   onRemove={removerTarefa}
-                  onCheck={concluirTarefa}/>
+                  onCheck={concluirTarefa}
+                  completed={contarTarefasConcluidas}/>
               </div>
             </div>
           </div>

@@ -26,4 +26,5 @@ export type Props = {
   dados: Item[]
   onRemove: (id:number) => void
   onCheck: (id:number) => void
+  completed: number
 }
