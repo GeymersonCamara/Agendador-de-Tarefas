@@ -16,11 +16,13 @@ export interface TabelaProps {
   Suppliers: SupplierData[]
 }
 
-export interface Item {
-  id: number
-  nome: string
-  concluido: boolean
-}
+export type Item = {
+  id: number;
+  nome: string;
+  concluido: boolean;
+  criadoEm: string;
+  concluidoEm?: string;
+};
 
 export type Props = {
   dados: Item[]

@@ -7,13 +7,27 @@ import { Card } from "../components/card";
 import { Table } from "../components/tabela";
 import { Header } from "../components/header";
 import { Button } from "@/components/ui/button";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { Item } from "@/domain/type";
 
 export function Home() {
 
-  const [lista, setLista] = useState<Item[]>([])
+  const [lista, setLista] = useState<Item[]>(() => {
+    const dadosSalvos = localStorage.getItem("tarefas");
+
+    if (dadosSalvos) {
+      try {
+        return JSON.parse(dadosSalvos);
+      } catch {
+        return [];
+      }
+    }
+
+    return [];
+  });
   const [novoItem, setNovoItem] =useState<string>('')
+  const hoje = new Date().toISOString().split("T")[0];
+  const mesAtual = new Date().getMonth();
 
   function adicionaItem() {
     if(novoItem.trim() === '') return
@@ -25,7 +39,8 @@ export function Home() {
     const novoObjetoItem: Item = {
       id: novoId,
       nome: novoItem,
-      concluido: false
+      concluido: false,
+      criadoEm: new Date().toISOString(),
     }
 
     setLista(prev => [...prev, novoObjetoItem])
@@ -33,11 +48,23 @@ export function Home() {
   }
 
   function removerTarefa(id: number) {
-    setLista(lista.filter(lista => lista.id !== id))
+    setLista(prev => prev.filter(item => item.id !== id))
   }
 
   function concluirTarefa(id: number) {
-    setLista(lista => lista.map(item => item.id === id ? {...item, concluido: !item.concluido } : item))
+    setLista(lista =>
+      lista.map(item =>
+        item.id === id
+          ? {
+              ...item,
+              concluido: !item.concluido,
+              concluidoEm: !item.concluido
+                ? new Date().toISOString()
+                : undefined,
+            }
+          : item
+      )
+    );
   }
 
   const contarTarefasConcluidas = useMemo(() => {
@@ -48,17 +75,42 @@ export function Home() {
     return lista.length === 0 ? 0 : contarTarefasConcluidas / lista.length;
   }, [lista, contarTarefasConcluidas]);
 
+  useEffect(() => {
+    localStorage.setItem("tarefas", JSON.stringify(lista));
+  }, [lista]);
+
+  const tarefasHoje = useMemo(() => {
+    return lista.filter(item =>
+      item.concluidoEm?.startsWith(hoje)
+    );
+  }, [lista, hoje]);
+
+  const tarefasMes = useMemo(() => {
+    return lista.filter(item => {
+      if (!item.concluidoEm) return false;
+      const data = new Date(item.concluidoEm);
+      return data.getMonth() === mesAtual;
+    });
+  }, [lista, mesAtual]);
+
   return (
       <div className="min-h-screen bg-primary flex text-white font-sans">
         <Sidebar />
         <div className="flex-1 flex flex-col px-20 pt-6 pb-10 gap-6">
           <Header />
         <div className="flex gap-6 w-full">
-          <div className="flex gap-6 w-full grid grid-cols-2 gap-4 items-start">
+          <div className="flex gap-10 w-full grid grid-cols-2 items-start">
             <Card
               title="Fluxo Diario"
-              value={contarTarefasConcluidas}
+              value={tarefasHoje.length}
               subtitle={"Melhor mês: novembro\nR$1.189.150"}
+              icon={<BarChart2 size={20} />}
+              colorClasses="bg-chart-4"
+            />
+            <Card
+              title="Fluxo Mensal"
+              value={tarefasMes.length}
+              subtitle={`Melhor mês: novembro\n${contarTarefasConcluidas}`}
               icon={<BarChart2 size={20} />}
               colorClasses="bg-chart-4"
             />
@@ -66,13 +118,6 @@ export function Home() {
               title="Média Diaria"
               value={contarTarefasConcluidas}
               subtitle={"Melhor mês: novembro\nR$1.189.150"}
-              icon={<BarChart2 size={20} />}
-              colorClasses="bg-chart-4"
-            />
-            <Card
-              title="Fluxo Mensal"
-              value={contarTarefasConcluidas}
-              subtitle={`Melhor mês: novembro\n${contarTarefasConcluidas}`}
               icon={<BarChart2 size={20} />}
               colorClasses="bg-chart-4"
             />
