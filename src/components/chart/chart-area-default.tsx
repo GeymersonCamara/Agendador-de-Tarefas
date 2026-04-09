@@ -42,7 +42,7 @@ export function ChartAreaDefault({ data }: Props) {
           >
             <CartesianGrid vertical={false} />
             <XAxis
-              dataKey="date"
+              dataKey="label"
               tickLine={false}
               axisLine={false}
               tickMargin={8}
