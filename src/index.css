@@ -13,6 +13,12 @@
   }
 }
 
+@layer utilities {
+  .animate-spin-slow {
+    animation: spin 2.8s linear infinite;
+  }
+}
+
 @theme inline {
     --font-heading: var(--font-sans);
     --font-sans: 'Geist Variable', sans-serif;
@@ -63,66 +69,66 @@
 }
 
 :root {
-    --muted: #94A3B8;
-    --text: #0f172a;
-    --highlight: #10B981;
+  --text: #1f2937;
 
-    /* Fundo geral (mais claro como na imagem) */
-    --background: #F1F5F9;
-    --foreground: #0f172a;
+  /* Fundo geral (Orkut-like) */
+  --background: #dfe3ee;
+  --foreground: #1f2937;
 
-    /* Cards (brancos com leve contraste) */
-    --card: #FFFFFF;
-    --card-foreground: #0f172a;
+  /* Cards */
+  --card: #ffffff;
+  --card-foreground: #1f2937;
 
-    --popover: #FFFFFF;
-    --popover-foreground: #0f172a;
+  --popover: #ffffff;
+  --popover-foreground: #1f2937;
 
-    /* Verde principal (botões / destaque) */
-    --primary: #059669;
-    --primary-foreground: #ECFDF5;
+  /* 🔵 Cor principal (azul clássico) */
+  --primary: #3b5998;
+  --primary-foreground: #ffffff;
 
-    /* Cinzas suaves */
-    --secondary: #E2E8F0;
-    --secondary-foreground: #334155;
+  /* Cinza claro (boxes/header estilo Orkut) */
+  --secondary: #f1f1f1;
+  --secondary-foreground: #374151;
 
-    --muted: #F8FAFC;
-    --muted-foreground: #64748B;
+  /* Muted (textos secundários) */
+  --muted: #f9fafb;
+  --muted-foreground: #6b7280;
 
-    /* Azul leve de apoio */
-    --accent: #3B82F6;
-    --accent-foreground: #EFF6FF;
+  /* Azul claro de apoio */
+  --accent: #e7efff;
+  --accent-foreground: #1e3a8a;
 
-    --destructive: #EF4444;
+  --destructive: #ef4444;
 
-    --border: #E2E8F0;
-    --input: #E2E8F0;
-    --ring: #94A3B8;
+  /* Bordas bem leves */
+  --border: #d1d5db;
+  --input: #e5e7eb;
+  --ring: #9ca3af;
 
-    /* Charts (verde predominante como no gráfico) */
-    --chart-1: #064E3B;
-    --chart-2: #065F46;
-    --chart-3: #047857;
-    --chart-4: #D1FAE5;
-    --chart-5: #A7F3D0;
-    --chart-6: #34D399;
-    --chart-7: #10B981;
-    --chart-8: #059669;
-    --chart-9: #047857;
-    --chart-10: #022C22;
-    --chart-11: #064E3B;
+  /* Charts (agora coerente com azul) */
+  --chart-1: #3b5998;
+  --chart-2: #4c70ba;
+  --chart-3: #6b8bd6;
+  --chart-4: #c7d2fe;
+  --chart-5: #a5b4fc;
+  --chart-6: #818cf8;
+  --chart-7: #6366f1;
+  --chart-8: #4f46e5;
+  --chart-9: #4338ca;
+  --chart-10: #1e3a8a;
+  --chart-11: #1e40af;
 
-    --radius: 0.75rem;
+  --radius: 0.4rem;
 
-    /* Sidebar (bem clara, quase branca) */
-    --sidebar: #FFFFFF;
-    --sidebar-foreground: #0f172a;
-    --sidebar-primary: #059669;
-    --sidebar-primary-foreground: #ECFDF5;
-    --sidebar-accent: #F1F5F9;
-    --sidebar-accent-foreground: #334155;
-    --sidebar-border: #E2E8F0;
-    --sidebar-ring: #94A3B8;
+  /* Sidebar */
+  --sidebar: #ffffff;
+  --sidebar-foreground: #1f2937;
+  --sidebar-primary: #3b5998;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #f1f1f1;
+  --sidebar-accent-foreground: #374151;
+  --sidebar-border: #d1d5db;
+  --sidebar-ring: #9ca3af;
 }
 
 .dark {

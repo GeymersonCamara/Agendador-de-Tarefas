@@ -12,7 +12,7 @@ import {
   ChartTooltipContent,
   type ChartConfig,
 } from "@/components/ui/chart"
-import type { ChartData } from "@/domain/type"
+import type { ChartData } from "recharts/types/state/chartDataSlice"
 
 export const description = "A simple area chart"
 
