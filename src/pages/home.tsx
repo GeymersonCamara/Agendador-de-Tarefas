@@ -195,10 +195,6 @@ function removeFile(index: number) {
                   <p className="text-sm text-gray-500">Carregando posts...</p>
                 ) : (
                   posts.map((post, i) => (
-                    console.log("COMPARE:", {
-                      local: localStorage.getItem("userId"),
-                      post: post.author?.id,
-                    }),
                       <div
                         key={i}
                         className="border rounded-lg p-3 hover:bg-gray-50 transition"
@@ -468,7 +464,6 @@ function removeFile(index: number) {
                 <button
                   onClick={async () => {
                     const token = localStorage.getItem("token");
-                    console.log("TOKEN:", token);
 
                     try {
                       await fetch("http://localhost:3000/posts", {
