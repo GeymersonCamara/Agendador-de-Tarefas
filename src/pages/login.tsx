@@ -169,7 +169,9 @@ export function Login() {
               {/* Footer */}
               <div className="text-sm text-center text-gray-500">
                 Don’t have an account?{" "}
-                <button className="text-blue-600 font-medium hover:underline">
+                <button
+                  className="text-blue-600 font-medium hover:underline"
+                  onClick={() => window.location.href = "/cadastro"}>
                   Sign up
                 </button>
               </div>
