@@ -7,6 +7,7 @@ import { Forum } from "./pages/forum";
 import { Login } from "./pages/login";
 import { Cadastro } from "./pages/cadastro";
 import { IndexInicio } from "./pages/index_inicio";
+import { Perfil } from "./pages/perfil";
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
@@ -17,6 +18,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         <Route path="/login" element={<Login />} />
         <Route path="/cadastro" element={<Cadastro />} />
         <Route path="/" element={<IndexInicio />} />
+        <Route path="/perfil" element={<Perfil />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>

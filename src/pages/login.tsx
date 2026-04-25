@@ -91,10 +91,34 @@ export function Login() {
       const result = await loginAdapter(email, password);
 
       localStorage.setItem("token", result.token);
-      const userId = result.user?.id || result.userId || result.id;
+      const loggedUser = result.user ?? result;
+      const userId = loggedUser?.id || result.userId || result.id;
 
       if (userId) {
         localStorage.setItem("userId", userId);
+      }
+
+      const displayName =
+        loggedUser?.name || loggedUser?.username || result.name || result.username;
+      const username = loggedUser?.username || result.username;
+      const avatar =
+        loggedUser?.avatarUrl ||
+        loggedUser?.profilePicture ||
+        loggedUser?.photoUrl ||
+        result.avatarUrl ||
+        result.profilePicture ||
+        result.photoUrl;
+
+      if (displayName) {
+        localStorage.setItem("userDisplayName", displayName);
+      }
+
+      if (username) {
+        localStorage.setItem("username", username);
+      }
+
+      if (avatar) {
+        localStorage.setItem("userAvatar", avatar);
       }
 
       window.location.href = "/home";

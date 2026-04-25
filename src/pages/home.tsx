@@ -25,6 +25,42 @@ export function Home() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loadingPosts, setLoadingPosts] = useState(true);
   const userId = localStorage.getItem("userId");
+  const loggedUsername = localStorage.getItem("username");
+  const loggedDisplayName =
+    localStorage.getItem("userDisplayName") || "Usuario";
+  const loggedAvatar =
+    localStorage.getItem("userAvatar") || "https://i.pravatar.cc/32";
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+
+  function getPostAuthorIdentity(post: Post) {
+    const avatar =
+      post.author?.avatarUrl ||
+      post.author?.profilePicture ||
+      post.author?.photoUrl ||
+      "https://i.pravatar.cc/40";
+    const username =
+      post.author?.username ||
+      (post.authorId === userId ? loggedUsername || undefined : undefined) ||
+      post.author?.name?.toLowerCase().replace(/\s+/g, ".") ||
+      "usuario";
+    const displayName = post.author?.name || "Usuario";
+
+    return { avatar, username, displayName };
+  }
+
+  function goToAuthorProfile(post: Post) {
+    const author = getPostAuthorIdentity(post);
+    const params = new URLSearchParams();
+
+    if (post.authorId) {
+      params.set("userId", post.authorId);
+    }
+
+    params.set("name", author.displayName);
+    params.set("username", author.username);
+    params.set("avatar", author.avatar);
+    window.location.href = `/perfil?${params.toString()}`;
+  }
 
   useEffect(() => {
     function handleKeyDown(e: KeyboardEvent) {
@@ -125,12 +161,18 @@ function removeFile(index: number) {
               />
             </div>
             <Bell size={20} className="text-[var(--muted-foreground)]" />
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 relative">
               <img
-                src="https://i.pravatar.cc/32"
-                className="rounded-full"
+                src={loggedAvatar}
+                className="rounded-full cursor-pointer"
+                onClick={() => setIsProfileOpen(!isProfileOpen)}
               />
-              <span className="text-sm font-medium">Carlos</span>
+              <span
+                className="text-sm font-medium cursor-pointer"
+                onClick={() => setIsProfileOpen(!isProfileOpen)}
+              >
+                {loggedDisplayName}
+              </span>
             </div>
           </div>
         </div>
@@ -195,10 +237,30 @@ function removeFile(index: number) {
                   <p className="text-sm text-gray-500">Carregando posts...</p>
                 ) : (
                   posts.map((post, i) => (
-                      <div
-                        key={i}
-                        className="border rounded-lg p-3 hover:bg-gray-50 transition"
+                    <div
+                      key={i}
+                      className="border rounded-lg p-3 hover:bg-gray-50 transition"
+                    >
+                      <button
+                        type="button"
+                        onClick={() => goToAuthorProfile(post)}
+                        className="flex items-center gap-2 mb-2 cursor-pointer hover:opacity-90 transition text-left"
                       >
+                        <img
+                          src={getPostAuthorIdentity(post).avatar}
+                          alt={`Foto de ${getPostAuthorIdentity(post).displayName}`}
+                          className="w-8 h-8 rounded-full object-cover"
+                        />
+                        <div className="leading-tight">
+                          <p className="text-sm font-medium text-gray-700">
+                            {getPostAuthorIdentity(post).displayName}
+                          </p>
+                          <p className="text-xs text-gray-500">
+                            @{getPostAuthorIdentity(post).username}
+                          </p>
+                        </div>
+                      </button>
+
                         <h4 className="font-semibold text-gray-700">
                           {post.title}
                         </h4>
@@ -208,7 +270,6 @@ function removeFile(index: number) {
                         </p>
 
                         <div className="text-xs text-gray-400 mt-2">
-                          {post.author?.name ?? "Unknown"} •{" "}
                           {new Date(post.createdAt).toLocaleDateString()}
                         </div>
 
@@ -234,7 +295,7 @@ function removeFile(index: number) {
                             Delete
                           </button>
                         )}
-                      </div>
+                    </div>
                   ))
                 )}
               </div>
@@ -550,6 +611,48 @@ function removeFile(index: number) {
           ))}
 
         </div>
+      )}
+      {isProfileOpen && (
+        <>
+          <div
+            className="fixed inset-0"
+            onClick={() => setIsProfileOpen(false)}
+          />
+
+          <div
+            className="
+            absolute right-0 mt-2
+            w-48
+            bg-white
+            border border-gray-200
+            rounded-lg
+            shadow-lg
+            z-50
+            overflow-hidden
+          "
+          >
+            <button
+              onClick={() => window.location.href = "/perfil"}
+              className="w-full text-left px-4 py-2 hover:bg-gray-100 text-sm"
+            >
+              👤 Ver perfil
+            </button>
+
+            <button
+              onClick={() => {
+                localStorage.removeItem("token");
+                localStorage.removeItem("userId");
+                localStorage.removeItem("username");
+                localStorage.removeItem("userDisplayName");
+                localStorage.removeItem("userAvatar");
+                window.location.href = "/";
+              }}
+              className="w-full text-left px-4 py-2 hover:bg-red-50 text-sm text-red-600"
+            >
+              🚪 Logout
+            </button>
+          </div>
+        </>
       )}
       <button
         onClick={() => setIsOpen(true)}

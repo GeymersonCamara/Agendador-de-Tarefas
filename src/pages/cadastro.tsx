@@ -8,6 +8,7 @@ import { createUser } from "@/repository/cadastro-repository";
 
 interface FormData {
   name: string;
+  username: string;
   email: string;
   password: string;
   confirmPassword: string;
@@ -75,6 +76,7 @@ function Card({ children }: { children: React.ReactNode }) {
 export function Cadastro() {
   const [form, setForm] = useState<FormData>({
     name: "",
+    username: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -88,20 +90,40 @@ export function Cadastro() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
+    if (form.password !== form.confirmPassword) {
+      alert("As senhas nao conferem.");
+      return;
+    }
+
+    const normalizedUsername = form.username.trim().toLowerCase();
+    const usernamePattern = /^[a-z0-9._]{3,20}$/;
+
+    if (!usernamePattern.test(normalizedUsername)) {
+      alert("Nome de usuario invalido. Use 3 a 20 caracteres com letras, numeros, ponto ou underscore.");
+      return;
+    }
+
     try {
         const user = await createUser({
         name: form.name,
+        username: normalizedUsername,
         email: form.email,
         password: form.password,
         birthDate: form.birthDate,
         });
 
         console.log("Usuário criado:", user);
+        localStorage.setItem("userDisplayName", form.name.trim());
+        localStorage.setItem("username", normalizedUsername);
 
         alert("Conta criada com sucesso!");
     } catch (error) {
         console.error("Erro ao criar usuário:", error);
-        alert("Erro ao criar conta");
+        const message =
+          error instanceof Error && error.message.toLowerCase().includes("username")
+            ? "Este nome de usuario ja esta em uso."
+            : "Erro ao criar conta";
+        alert(message);
     }
     }
   
@@ -153,6 +175,16 @@ export function Cadastro() {
                   name="name"
                   value={form.name}
                   placeholder="Seu nome"
+                  icon={<User size={18} />}
+                  onChange={handleChange}
+                />
+
+                <InputField
+                  label="Nome de usuario (unico)"
+                  type="text"
+                  name="username"
+                  value={form.username}
+                  placeholder="ex: joao.silva"
                   icon={<User size={18} />}
                   onChange={handleChange}
                 />

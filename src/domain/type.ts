@@ -26,5 +26,9 @@ export type Post = {
   author?: {
     id: string;
     name: string;
+    username?: string;
+    avatarUrl?: string;
+    profilePicture?: string;
+    photoUrl?: string;
   };
 };
