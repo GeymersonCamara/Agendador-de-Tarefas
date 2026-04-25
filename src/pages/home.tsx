@@ -9,17 +9,66 @@ import {
   Search,
   BookOpen,
   Headphones,
+  Plus,
 } from "lucide-react";
 import { NavItem } from "@/components/menu-lateral";
 import { Card } from "@/components/cards";
-import { discussions } from "@/components/comentarios";
+import { useEffect, useState } from "react";
+import type { Post } from "@/domain/type";
 
 export function Home() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [isPostOpen, setIsPostOpen] = useState(false);
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const [files, setFiles] = useState<File[]>([]);
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [loadingPosts, setLoadingPosts] = useState(true);
+  const userId = localStorage.getItem("userId");
+
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") setIsOpen(false);
+    }
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
+  useEffect(() => {
+    async function loadPosts() {
+      try {
+        const res = await fetch("http://localhost:3000/posts");
+        const data = await res.json();
+
+        setPosts(data);
+
+      } catch (error) {
+        console.error("Erro ao buscar posts:", error);
+      } finally {
+        setLoadingPosts(false);
+      }
+    }
+
+    loadPosts();
+  }, []);
+
+  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    if (!e.target.files) return;
+
+    const selectedFiles = Array.from(e.target.files);
+    setFiles((prev) => [...prev, ...selectedFiles]);
+  }
+
+function removeFile(index: number) {
+  setFiles((prev) => prev.filter((_, i) => i !== index));
+} 
+
   return (
     <div className="min-h-screen bg-gray-100 flex">
       {/* Sidebar */}
-      <aside className="w-64 bg-white p-4 hidden lg:block">
-        <div className="text-xl font-bold text-blue-600 mb-6">
+      <aside className="w-64 bg-[var(--sidebar)] text-[var(--sidebar-foreground)] p-4 hidden lg:block">
+        <div className="text-xl font-bold text-[var(--primary)] mb-6">
           <img
             src="/logo-completa.png"
             alt="EnglishConnect"
@@ -39,18 +88,18 @@ export function Home() {
         </div>
 
         {/* Daily Practice */}
-        <div className="mt-6 bg-blue-50 p-4 rounded-xl">
-          <h4 className="font-semibold text-gray-700 mb-2">
+        <div className="mt-6 bg-[var(--sidebar-accent)] p-4 rounded-xl">
+          <h4 className="font-semibold text-[var(--sidebar-foreground)] mb-2">
             Daily Practice
           </h4>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-[var(--muted-foreground)]">
             Word of the Day:
           </p>
-          <p className="font-bold text-blue-600">"Encourage"</p>
-          <p className="text-xs text-gray-500 mt-1">
+          <p className="font-bold text-[var(--primary)]">"Encourage"</p>
+          <p className="text-xs text-[var(--muted-foreground)] mt-1">
             To give support or confidence.
           </p>
-          <button className="mt-3 w-full bg-orange-500 text-white py-2 rounded-lg text-sm font-medium hover:bg-orange-600">
+          <button className="mt-3 w-full bg-[var(--warning)] text-white py-2 rounded-lg text-sm font-medium hover:opacity-90">
             Quick Quiz
           </button>
         </div>
@@ -60,22 +109,22 @@ export function Home() {
       <main className="flex-1 p-4 md:p-6">
         {/* Topbar */}
         <div className="flex items-center justify-between mb-6">
-          <div className="hidden md:flex items-center gap-6 text-gray-600">
-            <span className="font-medium text-blue-600">Home</span>
+          <div className="hidden md:flex items-center gap-6 text-[var(--muted-foreground)]">
+            <span className="font-medium text-[var(--primary)]">Home</span>
             <span>Courses</span>
             <span>Resources</span>
             <span>Community</span>
           </div>
 
           <div className="flex items-center gap-4">
-            <div className="hidden md:flex items-center bg-gray-200 px-3 py-2 rounded-lg">
-              <Search size={16} className="text-gray-500" />
+            <div className="hidden md:flex items-center bg-[var(--muted)] px-3 py-2 rounded-lg">
+              <Search size={16} className="text-[var(--muted-foreground)]" />
               <input
-                className="bg-transparent outline-none ml-2 text-sm"
+                className="bg-transparent outline-none ml-2 text-sm text-[var(--foreground)]"
                 placeholder="Search..."
               />
             </div>
-            <Bell size={20} className="text-gray-600" />
+            <Bell size={20} className="text-[var(--muted-foreground)]" />
             <div className="flex items-center gap-2">
               <img
                 src="https://i.pravatar.cc/32"
@@ -90,17 +139,17 @@ export function Home() {
         <div className="bg-gradient-to-r from-blue-600 to-blue-400 text-white rounded-xl p-6 flex flex-col md:flex-row justify-between items-center mb-6">
           <div>
             <h1 className="text-2xl font-bold mb-2">
-              Welcome to the English Community!
+              Welcome to Bloob English Community!
             </h1>
             <p className="text-sm mb-4">
-              Practice, Learn & Connect with English learners.
+              Pratique, aprenda e conecte-se com estudantes de inglês.
             </p>
             <div className="flex gap-3">
-              <button className="bg-orange-500 px-4 py-2 rounded-lg font-medium hover:bg-orange-600">
+              <button className="bg-[var(--warning)] px-4 py-2 rounded-lg font-medium hover:opacity-90">
                 Join Live Class
               </button>
-              <button className="bg-white text-blue-600 px-4 py-2 rounded-lg font-medium">
-                Start a Discussion
+              <button className="bg-white text-[var(--primary)] px-4 py-2 rounded-lg font-medium">
+                Inicie uma Discussão
               </button>
             </div>
           </div>
@@ -133,23 +182,65 @@ export function Home() {
             </Card>
 
             <Card title="Latest Discussions">
+              <div className="flex items-center justify-between mb-4">
+                <button
+                  onClick={() => setIsPostOpen(true)}
+                  className="bg-blue-600 text-white text-sm px-7 py-1.5 rounded-lg hover:bg-blue-700"
+                >
+                  New Post
+                </button>
+              </div>
               <div className="space-y-4">
-                {discussions.map((d, i) => (
-                  <div
-                    key={i}
-                    className="border rounded-lg p-3 hover:bg-gray-50 transition"
-                  >
-                    <h4 className="font-semibold text-gray-700">
-                      {d.title}
-                    </h4>
-                    <p className="text-sm text-gray-500">
-                      {d.description}
-                    </p>
-                    <div className="text-xs text-gray-400 mt-2">
-                      {d.replies} replies • {d.time}
-                    </div>
-                  </div>
-                ))}
+                {loadingPosts ? (
+                  <p className="text-sm text-gray-500">Carregando posts...</p>
+                ) : (
+                  posts.map((post, i) => (
+                    console.log("COMPARE:", {
+                      local: localStorage.getItem("userId"),
+                      post: post.author?.id,
+                    }),
+                      <div
+                        key={i}
+                        className="border rounded-lg p-3 hover:bg-gray-50 transition"
+                      >
+                        <h4 className="font-semibold text-gray-700">
+                          {post.title}
+                        </h4>
+
+                        <p className="text-sm text-gray-500">
+                          {post.content}
+                        </p>
+
+                        <div className="text-xs text-gray-400 mt-2">
+                          {post.author?.name ?? "Unknown"} •{" "}
+                          {new Date(post.createdAt).toLocaleDateString()}
+                        </div>
+
+                        {/* 👇 AQUI ENTRA O BOTÃO */}
+                        {userId === post.authorId && (
+                          <button
+                            onClick={async () => {
+                              const token = localStorage.getItem("token");
+
+                              await fetch(`http://localhost:3000/posts/${post.id}`, {
+                                method: "DELETE",
+                                headers: {
+                                  Authorization: `Bearer ${token}`,
+                                },
+                              });
+
+                              setPosts((prev) =>
+                                prev.filter((p) => p.id !== post.id)
+                              );
+                            }}
+                            className="text-red-500 text-xs mt-3 hover:underline"
+                          >
+                            Delete
+                          </button>
+                        )}
+                      </div>
+                  ))
+                )}
               </div>
             </Card>
           </div>
@@ -212,6 +303,275 @@ export function Home() {
           </div>
         </div>
       </main>
+      {/* Floating Action Button */}
+      {isOpen && (
+        <>
+          {/* click outside */}
+          <div
+            className="fixed inset-0"
+            onClick={() => setIsOpen(false)}
+          />
+
+          {/* popover */}
+          <div
+            className="
+              absolute bottom-20 right-0
+              w-56
+              bg-white
+              rounded-xl
+              shadow-xl
+              border border-gray-100
+              p-2
+              z-50
+            "
+          >
+            <button
+              onClick={() => window.location.href = "/new-post"}
+              className="w-full text-left px-3 py-2 rounded-lg hover:bg-gray-100 text-sm"
+            >
+              📝 New Post
+            </button>
+
+            <button
+              onClick={() => window.location.href = "/ask-question"}
+              className="w-full text-left px-3 py-2 rounded-lg hover:bg-gray-100 text-sm"
+            >
+              ❓ Ask Question
+            </button>
+
+            <button
+              onClick={() => window.location.href = "/start-discussion"}
+              className="w-full text-left px-3 py-2 rounded-lg hover:bg-gray-100 text-sm"
+            >
+              💬 Start Discussion
+            </button>
+          </div>
+        </>
+      )}
+      {isPostOpen && (
+        <>
+          {/* overlay */}
+          <div
+            className="fixed inset-0 bg-black/40 z-40"
+            onClick={() => setIsPostOpen(false)}
+          />
+
+          {/* modal */}
+          <div className="
+            fixed z-50
+            top-1/2 left-1/2
+            -translate-x-1/2 -translate-y-1/2
+            w-full max-w-2xl
+            bg-[var(--card)]
+            border border-[var(--border)]
+            rounded-xl
+            shadow-xl
+            p-6
+            space-y-4
+          ">
+
+            {/* header */}
+            <div>
+              <h2 className="text-lg font-bold text-[var(--foreground)]">
+                Create new post
+              </h2>
+              <p className="text-sm text-[var(--muted-foreground)]">
+                Share something with the community
+              </p>
+            </div>
+
+            {/* title */}
+            <input
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="Post title..."
+              className="
+                w-full border-b border-[var(--border)]
+                bg-transparent outline-none
+                text-[var(--foreground)]
+                pb-2
+              "
+            />
+
+            {/* content */}
+            <textarea
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              placeholder="Write your post..."
+              className="
+                w-full h-32
+                bg-[var(--muted)]
+                p-3 rounded-lg
+                outline-none resize-none
+                text-[var(--foreground)]
+              "
+            />
+            <div className="flex gap-3 flex-wrap">
+
+              {/* IMAGE UPLOAD */}
+              <label className="
+                flex items-center gap-2
+                px-3 py-2 rounded-lg
+                bg-[var(--muted)]
+                hover:bg-[var(--accent)]
+                text-sm cursor-pointer
+              ">
+                📷 Image
+                <input
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  hidden
+                  onChange={handleFileChange}
+                />
+              </label>
+
+              {/* FILE UPLOAD */}
+              <label className="
+                flex items-center gap-2
+                px-3 py-2 rounded-lg
+                bg-[var(--muted)]
+                hover:bg-[var(--accent)]
+                text-sm cursor-pointer
+              ">
+                📎 File
+                <input
+                  type="file"
+                  multiple
+                  hidden
+                  onChange={handleFileChange}
+                />
+              </label>
+
+            </div>
+
+            {/* actions */}
+            <div className="flex justify-between items-center pt-2">
+
+              <div className="text-xs text-[var(--muted-foreground)]">
+                Tip: keep it short and clear
+              </div>
+
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setIsPostOpen(false)}
+                  className="
+                    px-4 py-2 rounded-lg
+                    bg-[var(--muted)]
+                    hover:bg-[var(--accent)]
+                    text-sm
+                  "
+                >
+                  Cancel
+                </button>
+
+                <button
+                  onClick={async () => {
+                    const token = localStorage.getItem("token");
+                    console.log("TOKEN:", token);
+
+                    try {
+                      await fetch("http://localhost:3000/posts", {
+                        method: "POST",
+                        cache: "no-store",
+                        headers: {
+                          "Content-Type": "application/json",
+                          Authorization: `Bearer ${token}`,
+                        },
+                        body: JSON.stringify({
+                          title,
+                          content,
+                        }),
+                      });
+
+                      setTitle("");
+                      setContent("");
+                      setIsPostOpen(false);
+
+                      // atualiza feed (ou você pode chamar sua função de reload posts aqui)
+                      const res = await fetch("http://localhost:3000/posts");
+                      const data = await res.json();
+
+                      setPosts(data);
+
+                    } catch (error) {
+                      console.error("Erro ao criar post:", error);
+                    }
+                  }}
+                  className="
+                    px-4 py-2 rounded-lg
+                    bg-[var(--primary)]
+                    text-white
+                    hover:opacity-90
+                    text-sm
+                  "
+                >
+                  Publish
+                </button>
+              </div>
+
+            </div>
+          </div>
+        </>
+      )}
+      {files.length > 0 && (
+        <div className="grid grid-cols-2 gap-3 pt-3">
+
+          {files.map((file, i) => (
+            <div
+              key={i}
+              className="
+                relative
+                bg-[var(--muted)]
+                border border-[var(--border)]
+                rounded-lg p-2
+              "
+            >
+              {/* IMAGE PREVIEW */}
+              {file.type?.startsWith("image") ? (
+                <img
+                  src={URL.createObjectURL(file)}
+                  className="w-full h-24 object-cover rounded-md"
+                />
+              ) : (
+                <div className="text-sm text-[var(--foreground)]">
+                  📄 {file.name}
+                </div>
+              )}
+
+              {/* REMOVE BUTTON */}
+              <button
+                onClick={() => removeFile(i)}
+                className="
+                  absolute top-1 right-1
+                  bg-white border border-[var(--border)]
+                  rounded-full px-1
+                  text-xs
+                "
+              >
+                ✕
+              </button>
+            </div>
+          ))}
+
+        </div>
+      )}
+      <button
+        onClick={() => setIsOpen(true)}
+        className="
+          fixed bottom-6 right-6
+          bg-orange-500 hover:bg-orange-600
+          text-white
+          w-14 h-14
+          rounded-full
+          shadow-lg
+          flex items-center justify-center
+          transition-all
+          hover:scale-105
+        "
+      >
+        <Plus size={22} />
+      </button>
     </div>
   );
 }

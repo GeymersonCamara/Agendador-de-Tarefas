@@ -90,7 +90,12 @@ export function Login() {
     try {
       const result = await loginAdapter(email, password);
 
-      console.log("Login realizado:", result);
+      localStorage.setItem("token", result.token);
+      const userId = result.user?.id || result.userId || result.id;
+
+      if (userId) {
+        localStorage.setItem("userId", userId);
+      }
 
       window.location.href = "/home";
     } catch (error: unknown) {

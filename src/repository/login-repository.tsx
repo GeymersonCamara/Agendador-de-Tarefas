@@ -7,10 +7,11 @@ export async function loginRepository(email: string, password: string) {
     body: JSON.stringify({ email, password }),
   });
 
+  const data = await response.json();
+
   if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.error || "Erro ao fazer login");
+    throw new Error(data.error || "Erro ao fazer login");
   }
 
-  return response.json();
+  return data;
 }

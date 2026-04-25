@@ -16,3 +16,15 @@ export interface Discussion {
   replies: number;
   time: string;
 }
+
+export type Post = {
+  id: string;
+  title: string;
+  content?: string;
+  createdAt: string;
+  authorId: string;
+  author?: {
+    id: string;
+    name: string;
+  };
+};
