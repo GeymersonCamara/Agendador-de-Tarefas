@@ -138,9 +138,12 @@ export function IndexInicio() {
       <header className="py-6">
         <Container>
           <div className="flex justify-between items-center">
-            <h1 className="text-white font-bold text-xl">
-              EnglishConnect
-            </h1>
+            <img
+              src="/logo-completa-white.png"
+              alt="EnglishConnect"
+              className="h-15 w-auto"
+              onClick={() => (window.location.href = "/")}
+            />
 
             <div className="flex gap-3">
               <Button
@@ -149,7 +152,7 @@ export function IndexInicio() {
                 Entrar
             </Button>
               <Button
-                onClick={() => window.location.href = "/login"}>
+                onClick={() => window.location.href = "/cadastro"}>
                 Criar conta
             </Button>
             </div>

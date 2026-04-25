@@ -20,7 +20,12 @@ export function Home() {
       {/* Sidebar */}
       <aside className="w-64 bg-white p-4 hidden lg:block">
         <div className="text-xl font-bold text-blue-600 mb-6">
-          EnglishConnect
+          <img
+            src="/logo-completa.png"
+            alt="EnglishConnect"
+            className="h-15 w-auto"
+            onClick={() => (window.location.href = "/home")}
+          />
         </div>
 
         <div className="space-y-2">

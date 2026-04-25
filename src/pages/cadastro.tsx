@@ -107,106 +107,116 @@ export function Cadastro() {
   
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-600 via-blue-500 to-blue-400 p-4">
-      <div className="w-full max-w-5xl grid md:grid-cols-2 bg-white/10 backdrop-blur-xl rounded-3xl overflow-hidden shadow-2xl">
+    <>
+      <div className="absolute top-6 left-6">
+        <img
+          src="/logo-completa-white.png"
+          alt="EnglishConnect"
+          className="h-15 w-auto"
+          onClick={() => (window.location.href = "/")}
+        />
+      </div>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-600 via-blue-500 to-blue-400 p-4">
+        <div className="w-full max-w-5xl grid md:grid-cols-2 bg-white/10 backdrop-blur-xl rounded-3xl overflow-hidden shadow-2xl">
 
-        {/* ================= LEFT SIDE ================= */}
-        <div className="hidden md:flex flex-col justify-center p-10 text-white bg-gradient-to-br from-blue-700 to-blue-500">
-          <h1 className="text-3xl font-bold mb-4">
-            Welcome to English Community 🌎
-          </h1>
+          {/* ================= LEFT SIDE ================= */}
+          <div className="hidden md:flex flex-col justify-center p-10 text-white bg-gradient-to-br from-blue-700 to-blue-500">
+            <h1 className="text-3xl font-bold mb-4">
+              Welcome to English Community 🌎
+            </h1>
 
-          <p className="text-sm text-blue-100 leading-relaxed">
-            Pratique inglês diariamente, conecte-se com estudantes do mundo todo
-            e evolua sua fluência com aulas e desafios reais.
-          </p>
-
-          <div className="mt-6 bg-white/10 p-4 rounded-xl text-sm italic text-blue-100">
-            "Consistência é o segredo para dominar qualquer idioma."
-          </div>
-        </div>
-
-        {/* ================= RIGHT SIDE ================= */}
-        <div className="flex items-center justify-center p-6">
-          <Card>
-            <h2 className="text-2xl font-bold text-gray-800 mb-1">
-              Criar conta
-            </h2>
-            <p className="text-sm text-gray-500 mb-6">
-              Preencha os dados para entrar na comunidade
+            <p className="text-sm text-blue-100 leading-relaxed">
+              Pratique inglês diariamente, conecte-se com estudantes do mundo todo
+              e evolua sua fluência com aulas e desafios reais.
             </p>
 
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="mt-6 bg-white/10 p-4 rounded-xl text-sm italic text-blue-100">
+              "Consistência é o segredo para dominar qualquer idioma."
+            </div>
+          </div>
 
-              <InputField
-                label="Nome completo"
-                type="text"
-                name="name"
-                value={form.name}
-                placeholder="Seu nome"
-                icon={<User size={18} />}
-                onChange={handleChange}
-              />
-
-              <InputField
-                label="Email"
-                type="email"
-                name="email"
-                value={form.email}
-                placeholder="you@example.com"
-                icon={<Mail size={18} />}
-                onChange={handleChange}
-              />
-
-              <InputField
-                label="Data de nascimento"
-                type="date"
-                name="birthDate"
-                value={form.birthDate}
-                placeholder=""
-                icon={<Calendar size={18} />}
-                onChange={handleChange}
-              />
-
-              <InputField
-                label="Senha"
-                type="password"
-                name="password"
-                value={form.password}
-                placeholder="••••••••"
-                icon={<Lock size={18} />}
-                onChange={handleChange}
-              />
-
-              <InputField
-                label="Confirmar senha"
-                type="password"
-                name="confirmPassword"
-                value={form.confirmPassword}
-                placeholder="••••••••"
-                icon={<Lock size={18} />}
-                onChange={handleChange}
-              />
-
-              <button
-                type="submit"
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 rounded-xl transition"
-              >
+          {/* ================= RIGHT SIDE ================= */}
+          <div className="flex items-center justify-center p-6">
+            <Card>
+              <h2 className="text-2xl font-bold text-gray-800 mb-1">
                 Criar conta
-              </button>
-              <div className="text-center">
+              </h2>
+              <p className="text-sm text-gray-500 mb-6">
+                Preencha os dados para entrar na comunidade
+              </p>
+
+              <form onSubmit={handleSubmit} className="space-y-4">
+
+                <InputField
+                  label="Nome completo"
+                  type="text"
+                  name="name"
+                  value={form.name}
+                  placeholder="Seu nome"
+                  icon={<User size={18} />}
+                  onChange={handleChange}
+                />
+
+                <InputField
+                  label="Email"
+                  type="email"
+                  name="email"
+                  value={form.email}
+                  placeholder="you@example.com"
+                  icon={<Mail size={18} />}
+                  onChange={handleChange}
+                />
+
+                <InputField
+                  label="Data de nascimento"
+                  type="date"
+                  name="birthDate"
+                  value={form.birthDate}
+                  placeholder=""
+                  icon={<Calendar size={18} />}
+                  onChange={handleChange}
+                />
+
+                <InputField
+                  label="Senha"
+                  type="password"
+                  name="password"
+                  value={form.password}
+                  placeholder="••••••••"
+                  icon={<Lock size={18} />}
+                  onChange={handleChange}
+                />
+
+                <InputField
+                  label="Confirmar senha"
+                  type="password"
+                  name="confirmPassword"
+                  value={form.confirmPassword}
+                  placeholder="••••••••"
+                  icon={<Lock size={18} />}
+                  onChange={handleChange}
+                />
+
                 <button
-                  type="button"
-                  className="text-blue-600 font-medium hover:underline"
-                  onClick={() => window.location.href = "/login"}
+                  type="submit"
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 rounded-xl transition"
                 >
-                  Login
+                  Criar conta
                 </button>
-              </div>
-            </form>
-          </Card>
+                <div className="text-center">
+                  <button
+                    type="button"
+                    className="text-blue-600 font-medium hover:underline"
+                    onClick={() => window.location.href = "/login"}
+                  >
+                    Login
+                  </button>
+                </div>
+              </form>
+            </Card>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

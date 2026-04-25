@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Mail, Lock, Loader2 } from "lucide-react";
+import { loginAdapter } from "@/adapter/login-adapter";
 
 /**
  * Tipagens
@@ -82,17 +83,37 @@ export function Login() {
   const [password, setPassword] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
-  const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
-  e.preventDefault();
-  setLoading(true);
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
+    e.preventDefault();
+    setLoading(true);
 
-  setTimeout(() => {
-    setLoading(false);
-    console.log({ email, password });
-  }, 1500);
-};
+    try {
+      const result = await loginAdapter(email, password);
+
+      console.log("Login realizado:", result);
+
+      window.location.href = "/home";
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error("Erro no login:", error.message);
+      } else {
+        console.error("Erro desconhecido");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
+    <>
+    <div className="absolute top-6 left-6">
+      <img
+        src="/logo-completa-white.png"
+        alt="EnglishConnect"
+        className="h-15 w-auto"
+        onClick={() => (window.location.href = "/")}
+      />
+    </div>
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-600 to-blue-400 px-4">
       {/* Container */}
       <div className="grid md:grid-cols-2 bg-white rounded-2xl shadow-2xl overflow-hidden max-w-5xl w-full">
@@ -180,5 +201,6 @@ export function Login() {
         </div>
       </div>
     </div>
+  </>
   );
 }
